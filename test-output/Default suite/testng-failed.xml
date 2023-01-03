@@ -5,39 +5,25 @@
     <classes>
       <class name="automation.spotify.Api">
         <methods>
+          <include name="getArtist"/>
           <include name="getArtistsAlbums"/>
           <include name="getChapter"/>
+          <include name="GetPlaylistItems"/>
           <include name="checkIfUsersFollowPlaylist"/>
-          <include name="getUserProfile"/>
+          <include name="followArtistsORUsers"/>
+          <include name="getUsersSavedTracks"/>
           <include name="checkUsersSavedAlbums"/>
           <include name="getAlbumTracks"/>
           <include name="getUsersSavedAlbums"/>
           <include name="getUsersSavedEpisodes"/>
           <include name="getParticularPlaylist"/>
-          <include name="SaveTracksForCurrentUser"/>
           <include name="getUsersTopItems"/>
-          <include name="getAvailableMarkets"/>
-          <include name="getAlbum"/>
-          <include name="getSeveralArtists"/>
-          <include name="getUsersSavedShows"/>
-          <include name="getArtist"/>
-          <include name="removeUsersSavedAlbums"/>
-          <include name="getSeveralAlbums"/>
-          <include name="getSeveralEpisodes"/>
-          <include name="getFollowedArtists"/>
-          <include name="GetPlaylistItems"/>
-          <include name="followArtistsORUsers"/>
-          <include name="getUsersSavedTracks"/>
-          <include name="getUsersPlaylists"/>
-          <include name="updateAlbumsForCurrentUser"/>
-          <include name="SearchForItem"/>
           <include name="createPlaylists"/>
-          <include name="getParticularProfile"/>
-          <include name="getCurrentUsersPlaylists"/>
+          <include name="search"/>
+          <include name="getAlbum"/>
           <include name="getEpisode"/>
-          <include name="ChangePlaylistDetails"/>
           <include name="AddItemstoPlaylist"/>
-          <include name="getSeveralChapters"/>
+          <include name="getUsersSavedShows"/>
         </methods>
       </class> <!-- automation.spotify.Api -->
     </classes>

@@ -6,8 +6,14 @@ import io.restassured.response.Response;
 import static io.restassured.RestAssured.given;
 
 public class Api {
-	public String token = "Bearer BQDboVcx-qxqXs0lRiVHizJXahLllcDMpfcar9x_lDTpj-gVNHjqiMolQlCxKSy1vkQx2ZvYUgZlnpbhP2wOMPxV9RSRyr69DFgd3MlH1ys9QwlRkjEA_l7cUI7o-xLokjbscDskPt2Ggt22upxf4yEJpvQn_dzbkpf-57m456FsphJPbKLFAKQi297ySOyeXzCH4_HUwfu87tj6u_n7dZb4mRxmUvCysvm_DNA9NMI3owtzia3_LZsw747nL-GfT29vabOxbmZ6";
-	public String userID = "31qs7ymf3zbq46f4zv5nrzhec7mu";
+	public String token = "Bearer BQA1Ol9jSzqba62OBISSceatdCgUC9aZCRYUsqvOKp6SHi5fJc_tgvNO_fUznCEyFUcvm7wd2t4fAUAoMuOpLjSdyYvRhk3ATi0cCKBTctM2IeUqZx1Im7iys7FQH2tDhGR1y-uuq73tF9tmqBMbg9VN3B6gzk8dT3FCCMMR-5kWQ4UXtjNIL-Ic1Yz-wgTYujrrESMkCm_wLobd6TGAQkRa4WD9b593Wx09AtktSPy-bXjZFxugKJFXBHM9hBHPdGAOL-jE4vk";
+	public String userID="31qs7ymf3zbq46f4zv5nrzhec7mu";
+	public String albumId="4aawyAB9vmqN3uQ7FjRGTy";
+	public String playlistId="4Zb6mQCUzILVBiOX2Eobtr";
+	public String artistId="0TnOYISbd1XYRBk9myaseg";
+	public String trackId="11dFghVXANMlKmJXsNCbNl";
+	public String episodeId="512ojhOuo1ktJprKbVcKyQ";
+	public String showId="38bS44xjbVVZ3No3ByF1dJ";
 	
 //	*********************************************************************************
 	//1. User-profile
@@ -22,11 +28,13 @@ public class Api {
 				.get("https://api.spotify.com/v1/me");
 
 		response.prettyPrint();
-		String userId = response.path("id");
+		userID = response.path("id");
 
 		System.out.println("--------------------------------------------------------");
-		System.out.println("user id :" + userId);
+		System.out.println("user id :" + userID);
 		response.then().statusCode(200);
+		
+		System.out.println("getContentType :" + response.getContentType());
 
 	}
 	
@@ -38,7 +46,7 @@ public class Api {
 				.header("Content-Type", "application/json")
 				.header("Authorization", token)
 				.when()
-				.get("https://api.spotify.com/v1/users/31qs7ymf3zbq46f4zv5nrzhec7mu");
+				.get("https://api.spotify.com/v1/users/userID");
 
 		response.prettyPrint();
 		String userId = response.path("id");
@@ -79,7 +87,7 @@ public class Api {
 				//.pathParam("market", "ES")
 				.queryParam("market", "ES")
 				.when()
-				.get("https://api.spotify.com/v1/playlists/4Zb6mQCUzILVBiOX2Eobtr");
+				.get("https://api.spotify.com/v1/playlists/playlistId");
 
 		response.prettyPrint();
 		System.out.println("--------------------------------------------------------");
@@ -98,7 +106,7 @@ public class Api {
 				.queryParam("limit", 10)
 				.queryParam("offset", 5)
 				.when()
-				.get("https://api.spotify.com/v1/users/31qs7ymf3zbq46f4zv5nrzhec7mu/playlists");
+				.get("https://api.spotify.com/v1/users/userID/playlists");
 
 		response.prettyPrint();
 		System.out.println("--------------------------------------------------------");
@@ -115,7 +123,7 @@ public class Api {
 				.header("Authorization", token)
 				.body("{\"name\":\"latests Bollywoods song\",\"description\":\"New playlists bollywood\",\"public\":false}")
 				.when()
-				.post("https://api.spotify.com/v1/users/31qs7ymf3zbq46f4zv5nrzhec7mu/playlists");
+				.post("https://api.spotify.com/v1/users/userID/playlists");
 
 		response.prettyPrint();
 		System.out.println("--------------------------------------------------------");
@@ -129,7 +137,7 @@ public class Api {
 	// Add Items to Playlist
 		@Test
 		public void AddItemstoPlaylist() {
-			String requestBody = "{\"uris\":[\"spotify:track:4iV5W9uYEdYUVa79Axb7Rh\",\"spotify:track:1301WleyT98MSxVHPZCA6M\",\"spotify:episode:512ojhOuo1ktJprKbVcKyQ\"]}";
+			String requestBody = "{\"uris\":[\"spotify:track:4iV5W9uYEdYUVa79Axb7Rh\",\"spotify:track:1301WleyT98MSxVHPZCA6M\",\"spotify:episode:episodeId\"]}";
 			Response response = given()
 					.header("Accept", "application/json")
 					.header("Content-Type", "application/json")
@@ -143,9 +151,9 @@ public class Api {
 			response.then().statusCode(201);
 		}
 		
-		// 	Change Playlist Details
+	// 	Change Playlist Details
 				@Test
-				public void ChangePlaylistDetails() {
+		public void ChangePlaylistDetails() {
 					String requestBody = "{\"name\":\"playlist bollywood\",\"description\":\"Updated playlist description\",\"public\":false}";
 					Response response = given()
 							.header("Accept", "application/json")
@@ -172,7 +180,7 @@ public class Api {
 					.queryParam("limit", 10)
 					.queryParam("offset", 5)
 					.when()
-					.get("https://api.spotify.com/v1/playlists/3cEYpjA9oz9GiPac4AsH4n/tracks?market=ES&fields=items(added_by.id%2Ctrack(name%2Chref%2Calbum(name%2Chref)))&limit=10&offset=5");
+					.get("https://api.spotify.com/v1/playlists/playlistId/tracks?market=ES&fields=items(added_by.id%2Ctrack(name%2Chref%2Calbum(name%2Chref)))&limit=10&offset=5");
 
 			response.prettyPrint();
 			System.out.println("--------------------------------------------------------");
@@ -256,11 +264,12 @@ public class Api {
 //		Check User's Saved Albums
 		@Test
 		public void checkUsersSavedAlbums() {
+			String query ="382ObEPsp2rxGrnsizN5TX,1A2GTWGtFfWp7KSQTwWOyo,2noRn2Aes5aoNVsU6iWThc";
 			Response response = given()
 					.header("Accept", "application/json")
 					.header("Content-Type", "application/json")
 					.header("Authorization", token)	
-					.queryParam("ids", "382ObEPsp2rxGrnsizN5TX,1A2GTWGtFfWp7KSQTwWOyo,2noRn2Aes5aoNVsU6iWThc")								
+					.queryParam("ids", query)								
 					.when()
 					.get("https://api.spotify.com/v1/me/albums/contains");
 
@@ -272,12 +281,14 @@ public class Api {
 //		Remove Users' Saved Albums
 		@Test
 		public void removeUsersSavedAlbums() {
+			String bodyContent= "[\"4iV5W9uYEdYUVa79Axb7Rh\", \"1301WleyT98MSxVHPZCA6M\"]";
+			String albumIds= "382ObEPsp2rxGrnsizN5TX,1A2GTWGtFfWp7KSQTwWOyo,2noRn2Aes5aoNVsU6iWThc";
 			Response response = given()
 					.header("Accept", "application/json")
 					.header("Content-Type", "application/json")
 					.header("Authorization", token)	
-					.queryParam("ids", "382ObEPsp2rxGrnsizN5TX,1A2GTWGtFfWp7KSQTwWOyo,2noRn2Aes5aoNVsU6iWThc")								
-					.body("[\"4iV5W9uYEdYUVa79Axb7Rh\", \"1301WleyT98MSxVHPZCA6M\"]")
+					.queryParam("ids",albumIds )								
+					.body(bodyContent)
 					.when()
 					.delete("https://api.spotify.com/v1/me/albums");
 
@@ -290,12 +301,14 @@ public class Api {
 		
 		@Test
 		public void updateAlbumsForCurrentUser() {
+			String bodyContent= "[\"4iV5W9uYEdYUVa79Axb7Rh\", \"1301WleyT98MSxVHPZCA6M\"]";
+			String albumIds= "382ObEPsp2rxGrnsizN5TX,1A2GTWGtFfWp7KSQTwWOyo,2noRn2Aes5aoNVsU6iWThc";
 			Response response = given()
 					.header("Accept", "application/json")
 					.header("Content-Type", "application/json")
 					.header("Authorization", token)	
-					.queryParam("ids", "382ObEPsp2rxGrnsizN5TX,1A2GTWGtFfWp7KSQTwWOyo,2noRn2Aes5aoNVsU6iWThc")								
-					.body("[\"4iV5W9uYEdYUVa79Axb7Rh\", \"1301WleyT98MSxVHPZCA6M\"]")
+					.queryParam("ids",albumIds)								
+					.body(bodyContent)
 					.when()
 					.put("https://api.spotify.com/v1/me/albums");
 
@@ -308,15 +321,17 @@ public class Api {
 		
 		@Test
 		public void SaveTracksForCurrentUser() {
+			String bodyContent= "[\"4iV5W9uYEdYUVa79Axb7Rh\", \"1301WleyT98MSxVHPZCA6M\"]";
+			String trackIds= "7ouMYWpwJ422jRcDASZB7P,4VqPOruhp5EdPBeR92t6lQ,2takcwOaAZWiXQijPHIx7B";
 			Response response = given()
 					.header("Accept", "application/json")
 					.header("Content-Type", "application/json")
 					.header("Authorization", token)	
-					.queryParam("ids", "7ouMYWpwJ422jRcDASZB7P,4VqPOruhp5EdPBeR92t6lQ,2takcwOaAZWiXQijPHIx7B")								
-					.body("[\"4iV5W9uYEdYUVa79Axb7Rh\", \"1301WleyT98MSxVHPZCA6M\"]")
+					.queryParam("ids", trackIds)								
+					.body(bodyContent)
 					.when()
 					.put("https://api.spotify.com/v1/me/tracks");
-
+			
 			response.prettyPrint();
 			System.out.println("--------------------------------------------------------");
 			response.then().statusCode(200);
@@ -351,7 +366,7 @@ public class Api {
 					.header("Authorization", token)	
 					.queryParam("ids", "jmperezperez,thelinmichael,wizzler")								
 					.when()
-					.get("https://api.spotify.com/v1/playlists/3cEYpjA9oz9GiPac4AsH4n/followers/contains");
+					.get("https://api.spotify.com/v1/playlists/playlistId/followers/contains");
 
 			response.prettyPrint();
 			System.out.println("--------------------------------------------------------");
@@ -362,13 +377,15 @@ public class Api {
 //		Follow Artists or Users(Update)
 		@Test
 		public void followArtistsORUsers() {
+			String bodyContent= "{ids:[\"74ASZWbe4lXaubB36ztrGX\", \"08td7MxkoHQkXnWAYD8d6Q\"]}";
+			String ids= "2CIMQHirSU0MQqyYHq0eOx,57dN52uHvrHOxijzpIgu3E,1vCWHaC5f2uS3yhpwWbIA6";
 			Response response = given()
 					.header("Accept", "application/json")
 					.header("Content-Type", "application/json")
 					.header("Authorization", token)	
 					.queryParam("type", "artist")
-					.queryParam("ids", "2CIMQHirSU0MQqyYHq0eOx,57dN52uHvrHOxijzpIgu3E,1vCWHaC5f2uS3yhpwWbIA6")								
-					.body("{ids:[\"74ASZWbe4lXaubB36ztrGX\", \"08td7MxkoHQkXnWAYD8d6Q\"]}")
+					.queryParam("ids",ids )								
+					.body(bodyContent)
 					.when()
 					.put("https://api.spotify.com/v1/me/following");
 
@@ -427,11 +444,12 @@ public class Api {
 		
 		@Test
 		public void getSeveralArtists() {
+			String artistIds= "2CIMQHirSU0MQqyYHq0eOx,57dN52uHvrHOxijzpIgu3E,1vCWHaC5f2uS3yhpwWbIA6";
 			Response response = given()
 					.header("Accept", "application/json")
 					.header("Content-Type", "application/json")
 					.header("Authorization", token)					
-					.queryParam("ids", "2CIMQHirSU0MQqyYHq0eOx,57dN52uHvrHOxijzpIgu3E,1vCWHaC5f2uS3yhpwWbIA6")
+					.queryParam("ids",artistIds)
 					.when()
 					.get("https://api.spotify.com/v1/artists");
 
@@ -447,9 +465,9 @@ public class Api {
 					.header("Accept", "application/json")
 					.header("Content-Type", "application/json")
 					.header("Authorization", token)					
-//					.queryParam("id", "0TnOYISbd1XYRBk9myaseg")
+//					.queryParam("id", "artistId")
 					.when()
-					.get("https://api.spotify.com/v1/artists/0TnOYISbd1XYRBk9myaseg");
+					.get("https://api.spotify.com/v1/artists/artistId");
 
 			response.prettyPrint();
 			System.out.println("--------------------------------------------------------");
@@ -463,13 +481,13 @@ public class Api {
 					.header("Accept", "application/json")
 					.header("Content-Type", "application/json")
 					.header("Authorization", token)					
-//					.queryParam("id", "0TnOYISbd1XYRBk9myaseg")
+//					.queryParam("id", "artistId")
 					.queryParam("include_groups", "single,appears_on")
 					.queryParam("market", "ES")
 					.queryParam("limit", 10)
 					.queryParam("offset", 5)
 					.when()
-					.get("https://api.spotify.com/v1/artists/0TnOYISbd1XYRBk9myaseg");
+					.get("https://api.spotify.com/v1/artists/artistId");
 
 			response.prettyPrint();
 			System.out.println("--------------------------------------------------------");
@@ -481,11 +499,12 @@ public class Api {
 //		Get Several Albums
 		@Test
 		public void getSeveralAlbums() {
+			String ids = "382ObEPsp2rxGrnsizN5TX,1A2GTWGtFfWp7KSQTwWOyo,2noRn2Aes5aoNVsU6iWThc";
 			Response response = given()
 					.header("Accept", "application/json")
 					.header("Content-Type", "application/json")
 					.header("Authorization", token)					
-					.queryParam("ids", "382ObEPsp2rxGrnsizN5TX,1A2GTWGtFfWp7KSQTwWOyo,2noRn2Aes5aoNVsU6iWThc")
+					.queryParam("ids", ids)
 					.queryParam("market", "ES")			
 					.when()
 					.get("https://api.spotify.com/v1/albums");
@@ -501,10 +520,10 @@ public class Api {
 					.header("Accept", "application/json")
 					.header("Content-Type", "application/json")
 					.header("Authorization", token)					
-//					.queryParam("id", "4aawyAB9vmqN3uQ7FjRGTy")
+//					.queryParam("id", "albumId")
 					.queryParam("market", "ES")			
 					.when()
-					.get("https://api.spotify.com/v1/albums/4aawyAB9vmqN3uQ7FjRGTy");
+					.get("https://api.spotify.com/v1/albums/albumId");
 
 			response.prettyPrint();
 			System.out.println("--------------------------------------------------------");
@@ -518,12 +537,12 @@ public class Api {
 					.header("Accept", "application/json")
 					.header("Content-Type", "application/json")
 					.header("Authorization", token)					
-//					.queryParam("id", "4aawyAB9vmqN3uQ7FjRGTy")
+//					.queryParam("id", "albumId")
 					.queryParam("market", "ES")	
 					.queryParam("limit", 10)
 					.queryParam("offset", 5)
 					.when()
-					.get("https://api.spotify.com/v1/albums/4aawyAB9vmqN3uQ7FjRGTy/tracks");
+					.get("https://api.spotify.com/v1/albums/albumId/tracks");
 
 			response.prettyPrint();
 			System.out.println("--------------------------------------------------------");
@@ -534,11 +553,12 @@ public class Api {
 //		Get Several Chapters
 		@Test
 		public void getSeveralChapters() {
+			String ids ="7ouMYWpwJ422jRcDASZB7P,4VqPOruhp5EdPBeR92t6lQ,2takcwOaAZWiXQijPHIx7B";
 			Response response = given()
 					.header("Accept", "application/json")
 					.header("Content-Type", "application/json")
 					.header("Authorization", token)					
-					.queryParam("ids", "7ouMYWpwJ422jRcDASZB7P,4VqPOruhp5EdPBeR92t6lQ,2takcwOaAZWiXQijPHIx7B")
+					.queryParam("ids", ids)
 					.queryParam("market", "ES")	
 					.when()
 					.get("https://api.spotify.com/v1/chapters");
@@ -555,10 +575,10 @@ public class Api {
 					.header("Accept", "application/json")
 					.header("Content-Type", "application/json")
 					.header("Authorization", token)					
-//					.queryParam("id", "38bS44xjbVVZ3No3ByF1dJ")
+//					.queryParam("id", "showId")
 					.queryParam("market", "ES")	
 					.when()
-					.get("https://api.spotify.com/v1/chapters/38bS44xjbVVZ3No3ByF1dJ");
+					.get("https://api.spotify.com/v1/chapters/showId");
 
 			response.prettyPrint();
 			System.out.println("--------------------------------------------------------");
@@ -570,13 +590,13 @@ public class Api {
 //		Episodes
 //		Get Several Episodes
 		@Test
-		public void getSeveralEpisodes()
-		{
+		public void getSeveralEpisodes(){
+			String episodeIds = "77o6BIVlYM3msb4MMIL1jH,0Q86acNRm6V9GYx55SXKwf";
 			Response response = given()
 					.header("Accept", "application/json")
 					.header("Content-Type", "application/json")
 					.header("Authorization", token)					
-					.queryParam("ids", "77o6BIVlYM3msb4MMIL1jH,0Q86acNRm6V9GYx55SXKwf")
+					.queryParam("ids", episodeIds)
 					.queryParam("market", "ES")	
 					.when()
 					.get("https://api.spotify.com/v1/episodes");
@@ -593,10 +613,10 @@ public class Api {
 					.header("Accept", "application/json")
 					.header("Content-Type", "application/json")
 					.header("Authorization", token)					
-//					.queryParam("id", "512ojhOuo1ktJprKbVcKyQ")
+//					.queryParam("id", "episodeId")
 					.queryParam("market", "ES")	
 					.when()
-					.get("https://api.spotify.com/v1/episodes/512ojhOuo1ktJprKbVcKyQ");
+					.get("https://api.spotify.com/v1/episodes/episodeId");
 
 			response.prettyPrint();
 			System.out.println("--------------------------------------------------------");
@@ -625,13 +645,15 @@ public class Api {
 		// Search 
 		@Test
 		public void search() {
+			String query = "remaster%20track:Doxy%20artist:Miles%20Davis";
 			Response response = given()
 					.header("Accept","application/json")
 					.header("Content-Type","application/json")
 					.header("Authorization",token)
-					.pathParam("q","remaster%20track:Doxy%20artist:Miles%20Davis")
+					.pathParam("q",query)
 					.when()
 					.get("https://api.spotify.com/v1/search/?q={q}");
 			response.prettyPrint();
+			response.then().statusCode(200);
 		}
 }
