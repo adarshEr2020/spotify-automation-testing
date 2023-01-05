@@ -6,8 +6,8 @@ import io.restassured.response.Response;
 import static io.restassured.RestAssured.given;
 
 public class Api {
-	public String token = "Bearer BQA1Ol9jSzqba62OBISSceatdCgUC9aZCRYUsqvOKp6SHi5fJc_tgvNO_fUznCEyFUcvm7wd2t4fAUAoMuOpLjSdyYvRhk3ATi0cCKBTctM2IeUqZx1Im7iys7FQH2tDhGR1y-uuq73tF9tmqBMbg9VN3B6gzk8dT3FCCMMR-5kWQ4UXtjNIL-Ic1Yz-wgTYujrrESMkCm_wLobd6TGAQkRa4WD9b593Wx09AtktSPy-bXjZFxugKJFXBHM9hBHPdGAOL-jE4vk";
-	public String userID="31qs7ymf3zbq46f4zv5nrzhec7mu";
+	public String token = "Bearer BQBPI2bg8PdG1QBcaIYfAK_cZl7RIf-6ClzsgKxRLwzhIhvElaBhPYsm8VmToKQ9D9dB0ih7kbhsdp4zkSWKnpe52xh-egm9WoYeSqDS4rz0j_Xdaq8SFl5jvDuwuYKbLA_zHmKZCLBGMgeUARaOKHWpGIvrIrSJbgk0G-Ez5LPXjnfyy36I9v9l32TmK97vfDw";
+	public String userID;
 	public String albumId="4aawyAB9vmqN3uQ7FjRGTy";
 	public String playlistId="4Zb6mQCUzILVBiOX2Eobtr";
 	public String artistId="0TnOYISbd1XYRBk9myaseg";
@@ -46,13 +46,13 @@ public class Api {
 				.header("Content-Type", "application/json")
 				.header("Authorization", token)
 				.when()
-				.get("https://api.spotify.com/v1/users/userID");
+				.get("https://api.spotify.com/v1/users/" + userID);
 
 		response.prettyPrint();
-		String userId = response.path("id");
+		userID = response.path("id");
 
 		System.out.println("--------------------------------------------------------");
-		System.out.println("user id :" + userId);
+		System.out.println("user id :" + userID);
 		response.then().statusCode(200);
 	}
 	
@@ -87,7 +87,7 @@ public class Api {
 				//.pathParam("market", "ES")
 				.queryParam("market", "ES")
 				.when()
-				.get("https://api.spotify.com/v1/playlists/playlistId");
+				.get("https://api.spotify.com/v1/playlists/"+playlistId);
 
 		response.prettyPrint();
 		System.out.println("--------------------------------------------------------");
@@ -106,7 +106,7 @@ public class Api {
 				.queryParam("limit", 10)
 				.queryParam("offset", 5)
 				.when()
-				.get("https://api.spotify.com/v1/users/userID/playlists");
+				.get("https://api.spotify.com/v1/users/" +userID +"/playlists");
 
 		response.prettyPrint();
 		System.out.println("--------------------------------------------------------");
@@ -123,7 +123,7 @@ public class Api {
 				.header("Authorization", token)
 				.body("{\"name\":\"latests Bollywoods song\",\"description\":\"New playlists bollywood\",\"public\":false}")
 				.when()
-				.post("https://api.spotify.com/v1/users/userID/playlists");
+				.post("https://api.spotify.com/v1/users/" +userID +"/playlists");
 
 		response.prettyPrint();
 		System.out.println("--------------------------------------------------------");
@@ -137,7 +137,7 @@ public class Api {
 	// Add Items to Playlist
 		@Test
 		public void AddItemstoPlaylist() {
-			String requestBody = "{\"uris\":[\"spotify:track:4iV5W9uYEdYUVa79Axb7Rh\",\"spotify:track:1301WleyT98MSxVHPZCA6M\",\"spotify:episode:episodeId\"]}";
+			String requestBody = "{\"uris\":[\"spotify:track:4iV5W9uYEdYUVa79Axb7Rh\",\"spotify:track:1301WleyT98MSxVHPZCA6M\",\"spotify:episode:"+episodeId+"\"]}";
 			Response response = given()
 					.header("Accept", "application/json")
 					.header("Content-Type", "application/json")
@@ -180,7 +180,7 @@ public class Api {
 					.queryParam("limit", 10)
 					.queryParam("offset", 5)
 					.when()
-					.get("https://api.spotify.com/v1/playlists/playlistId/tracks?market=ES&fields=items(added_by.id%2Ctrack(name%2Chref%2Calbum(name%2Chref)))&limit=10&offset=5");
+					.get("https://api.spotify.com/v1/playlists/"+playlistId+"/tracks?market=ES&fields=items(added_by.id%2Ctrack(name%2Chref%2Calbum(name%2Chref)))&limit=10&offset=5");
 
 			response.prettyPrint();
 			System.out.println("--------------------------------------------------------");
@@ -366,7 +366,7 @@ public class Api {
 					.header("Authorization", token)	
 					.queryParam("ids", "jmperezperez,thelinmichael,wizzler")								
 					.when()
-					.get("https://api.spotify.com/v1/playlists/playlistId/followers/contains");
+					.get("https://api.spotify.com/v1/playlists/"+playlistId+"/followers/contains");
 
 			response.prettyPrint();
 			System.out.println("--------------------------------------------------------");
@@ -467,7 +467,7 @@ public class Api {
 					.header("Authorization", token)					
 //					.queryParam("id", "artistId")
 					.when()
-					.get("https://api.spotify.com/v1/artists/artistId");
+					.get("https://api.spotify.com/v1/artists/"+artistId);
 
 			response.prettyPrint();
 			System.out.println("--------------------------------------------------------");
@@ -487,7 +487,7 @@ public class Api {
 					.queryParam("limit", 10)
 					.queryParam("offset", 5)
 					.when()
-					.get("https://api.spotify.com/v1/artists/artistId");
+					.get("https://api.spotify.com/v1/artists/"+artistId);
 
 			response.prettyPrint();
 			System.out.println("--------------------------------------------------------");
@@ -523,7 +523,7 @@ public class Api {
 //					.queryParam("id", "albumId")
 					.queryParam("market", "ES")			
 					.when()
-					.get("https://api.spotify.com/v1/albums/albumId");
+					.get("https://api.spotify.com/v1/albums/"+albumId);
 
 			response.prettyPrint();
 			System.out.println("--------------------------------------------------------");
@@ -542,7 +542,7 @@ public class Api {
 					.queryParam("limit", 10)
 					.queryParam("offset", 5)
 					.when()
-					.get("https://api.spotify.com/v1/albums/albumId/tracks");
+					.get("https://api.spotify.com/v1/albums/"+albumId+"/tracks");
 
 			response.prettyPrint();
 			System.out.println("--------------------------------------------------------");
@@ -578,7 +578,7 @@ public class Api {
 //					.queryParam("id", "showId")
 					.queryParam("market", "ES")	
 					.when()
-					.get("https://api.spotify.com/v1/chapters/showId");
+					.get("https://api.spotify.com/v1/chapters/"+showId);
 
 			response.prettyPrint();
 			System.out.println("--------------------------------------------------------");
@@ -616,7 +616,7 @@ public class Api {
 //					.queryParam("id", "episodeId")
 					.queryParam("market", "ES")	
 					.when()
-					.get("https://api.spotify.com/v1/episodes/episodeId");
+					.get("https://api.spotify.com/v1/episodes/"+episodeId);
 
 			response.prettyPrint();
 			System.out.println("--------------------------------------------------------");

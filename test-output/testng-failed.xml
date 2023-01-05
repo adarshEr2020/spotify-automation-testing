@@ -5,24 +5,6 @@
     <classes>
       <class name="automation.spotify.Api">
         <methods>
-          <include name="getArtist"/>
-          <include name="getArtistsAlbums"/>
-          <include name="getChapter"/>
-          <include name="GetPlaylistItems"/>
-          <include name="checkIfUsersFollowPlaylist"/>
-          <include name="followArtistsORUsers"/>
-          <include name="getUsersSavedTracks"/>
-          <include name="checkUsersSavedAlbums"/>
-          <include name="getAlbumTracks"/>
-          <include name="getUsersSavedAlbums"/>
-          <include name="getUsersSavedEpisodes"/>
-          <include name="getParticularPlaylist"/>
-          <include name="getUsersTopItems"/>
-          <include name="createPlaylists"/>
-          <include name="search"/>
-          <include name="getAlbum"/>
-          <include name="getEpisode"/>
-          <include name="AddItemstoPlaylist"/>
           <include name="getUsersSavedShows"/>
         </methods>
       </class> <!-- automation.spotify.Api -->
